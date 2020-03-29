@@ -1,41 +1,28 @@
-import React from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
 
-export default class Title extends React.Component {
+export default function Title(props) {
+  const [count, setCount] = useState(0);
 
-  constructor(props) {
-    super(props)
+  useEffect(() => {
+    setCount(3)
+  }, [])
 
-    this.state = {
-      count: 0
-    }
+  const updateState = useCallback(() => setCount(count + 1), [count])
 
-    this.updateState = this.updateState.bind(this)
+  const style = {
+    color: props.color,
+    backgroundColor: props.bgColor || 'blue',
+    padding: '20px',
   }
 
-  componentDidMount() {
-    this.setState({
-      count: 3
-    })
-  }
-
-  updateState() {
-    this.setState({
-      count: this.state.count + 1
-    })
-  }
-
-  render() {
-    const style = {
-      color: this.props.color,
-      backgroundColor: this.props.bgColor || 'blue',
-      padding: '20px',
-    }
-
-    return (
-      <div>
-        <h1 style={style}>{this.props.text + ' ' + this.state.count}</h1>
-        <button onClick={this.updateState}>add one</button>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <h1 style={style}>{props.text + ' ' + count}</h1>
+      <button onClick={updateState}>add one</button>
+    </div>
+  )
 }
